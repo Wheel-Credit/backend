@@ -9,9 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
+@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/wheel-credit/v1/")
+@RequestMapping("/api/wheel-credit/v1/client")
 public class ClientController {
     private final ClientService clientService;
     private final ModelMapper modelMapper;
@@ -21,7 +21,7 @@ public class ClientController {
         this.modelMapper = modelMapper;
     }
 
-    // URL: http://localhost:8080/api/wheel-credit/v1/signup
+    // URL: http://localhost:8090/api/wheel-credit/v1/client/signup
     // Method: POST
     @Transactional
     @PostMapping("signup")
@@ -29,7 +29,7 @@ public class ClientController {
         return new ResponseEntity<Long>(clientService.save(modelMapper.map(clientDto, Client.class)), HttpStatus.CREATED);
     }
 
-    // URL: http://localhost:8080/api/wheel-credit/v1/login
+    // URL: http://localhost:8090/api/wheel-credit/v1/client/login
     // Method: POST
     @Transactional(readOnly = true)
     @PostMapping("login")
@@ -37,15 +37,15 @@ public class ClientController {
         return new ResponseEntity<Long>(clientService.login(modelMapper.map(loginDto, Client.class)), HttpStatus.OK);
     }
 
-    // URL: http://localhost:8080/api/wheel-credit/v1/client/{clientId}
+    // URL: http://localhost:8090/api/wheel-credit/v1/client/{clientId}
     // Method: GET
     @Transactional(readOnly = true)
-    @GetMapping("client/{clientId}")
+    @GetMapping("/{clientId}")
     public ResponseEntity<Client> getClientById(@PathVariable(name = "clientId") Long clientId) {
         return new ResponseEntity<>(clientService.findById(clientId), HttpStatus.OK);
     }
 
-    // URL: http://localhost:8080/api/wheel-credit/v1/client/{clientId}
+    // URL: http://localhost:8090/api/wheel-credit/v1/client/{clientId}
     // Method: PUT
     @Transactional
     @PutMapping("/{clientId}")
@@ -53,7 +53,7 @@ public class ClientController {
         return new ResponseEntity<>(clientService.update(clientId, clientDto), HttpStatus.OK);
     }
 
-    // URL: http://localhost:8080/api/wheel-credit/v1/client/{clientId}
+    // URL: http://localhost:8090/api/wheel-credit/v1/client/{clientId}
     // Method: DELETE
     @Transactional
     @DeleteMapping("/{clientId}")

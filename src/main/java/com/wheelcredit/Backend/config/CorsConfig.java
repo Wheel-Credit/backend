@@ -11,7 +11,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/wheel-credit/v1/**")
-                        .allowedOrigins("*")
+                        .allowedOrigins("http://localhost:4200")
                         .allowedMethods("*")
                         .allowedHeaders("*");
 

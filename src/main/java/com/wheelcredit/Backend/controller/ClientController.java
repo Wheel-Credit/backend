@@ -1,6 +1,7 @@
 package com.wheelcredit.Backend.controller;
 
 import com.wheelcredit.Backend.dto.ClientDto;
+import com.wheelcredit.Backend.dto.ExistDto;
 import com.wheelcredit.Backend.dto.LoginDto;
 import com.wheelcredit.Backend.model.Client;
 import com.wheelcredit.Backend.service.ClientService;
@@ -43,6 +44,16 @@ public class ClientController {
     @GetMapping("/{clientId}")
     public ResponseEntity<Client> getClientById(@PathVariable(name = "clientId") Long clientId) {
         return new ResponseEntity<>(clientService.findById(clientId), HttpStatus.OK);
+    }
+
+    // URL: http://localhost:8090/api/wheel-credit/v1/client
+    // Method: GET
+    @Transactional(readOnly = true)
+    @GetMapping("")
+    public ResponseEntity<ExistDto> getClientById() {
+        var exist = new ExistDto();
+        exist.setMessage("Hi client");
+        return new ResponseEntity<>(exist, HttpStatus.OK);
     }
 
     // URL: http://localhost:8090/api/wheel-credit/v1/client/{clientId}

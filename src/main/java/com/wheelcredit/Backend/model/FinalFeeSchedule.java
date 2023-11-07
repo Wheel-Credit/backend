@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -20,19 +22,19 @@ public class FinalFeeSchedule {
     public Long id;
 
     @Column(name = "initial_balance", nullable = false)
-    private float initialBalance;
+    private List<Float> initialBalance;
 
     @Column(name = "final_installment_interest", nullable = false)
-    private float finalInstallmentInterest;
+    private List<Float> finalInstallmentInterest;
 
     @Column(name = "final_installment_amortization", nullable = false)
-    private float finalInstallmentAmortization;
+    private List<Float> finalInstallmentAmortization;
 
     @Column(name = "final_installment_insurance", nullable = false)
-    private float finalInstallmentInsurance;
+    private List<Float> finalInstallmentInsurance;
 
     @Column(name = "final_balance", nullable = false)
-    private float finalBalance;
+    private List<Float> finalBalance;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "smartPaymentBCP_id", referencedColumnName = "id")

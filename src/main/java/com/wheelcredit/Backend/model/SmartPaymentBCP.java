@@ -30,6 +30,10 @@ public class SmartPaymentBCP {
     @Column(name = "van", nullable = false)
     private float van;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="client_id", referencedColumnName = "id")
+    public Client client;
+
     @OneToOne(mappedBy = "smartPaymentBCP") // Use the property name in FinalFeeSchedule
     private FinalFeeSchedule finalFeeSchedule;
 }

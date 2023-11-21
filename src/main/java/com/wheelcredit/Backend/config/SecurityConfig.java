@@ -22,7 +22,7 @@ public class SecurityConfig {
         http.cors().and()
                 .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers("/api/wheel-credit/v1/auth/**").permitAll()
-                    .requestMatchers("/api/wheel-credit/v1/client").authenticated()
+                    .requestMatchers("/api/wheel-credit/v1/client","/api/wheel-credit/v1/smartPayment").authenticated()
                     .anyRequest().authenticated())
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session

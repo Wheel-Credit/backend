@@ -18,6 +18,15 @@ public class SmartPayment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name="name",nullable=false)
+    private String name;
+
+    @Column(name="description",nullable=false)
+    private String description;
+
+    @Column(name="image",nullable=false)
+    private String image;
+
     @Column(name="selling_price_ asset",nullable=false)
     private double sellingPriceAsset; //precio de venta activo
 
@@ -27,11 +36,8 @@ public class SmartPayment {
     @Column(name="initial_installment",nullable=false)
     private double initialInstallment;// cuota inicial
 
-    @Column(name = "final_fee", nullable = false)//
-    private double finalFee;// cuota final
-
-    @Column(name = "number_years", nullable = false)//
-    private int numberOfYears;// numero de años
+    @Column(name = "final_installment", nullable = false)//
+    private double finalInstallment;// cuota final
 
     @Column(name= "interest_rate",nullable = false)
     private double interestRate; //tasa de interes
@@ -48,17 +54,32 @@ public class SmartPayment {
     @Column(name= "notary_costs",nullable = false)
     private double notaryCosts; //costos notariales
 
+    @Column(name= "notary_costs_type",nullable = false)
+    private String notaryCostsType; //costos notariales
+
     @Column(name= "registration_costs",nullable = false)
     private double registrationCosts; // costos de registro
+
+    @Column(name= "registration_costs_type",nullable = false)
+    private double registrationCostsType; // costos de registro
 
     @Column(name= "appraisal",nullable = false)
     private float appraisal; // tasacion
 
+    @Column(name= "appraisal_type",nullable = false)
+    private float appraisalType; // tasacion
+
     @Column(name= "study_commission",nullable = false)
     private double studyCommission; //comision de estudio
 
+    @Column(name= "study_commission_type",nullable = false)
+    private double studyCommissionType; //comision de estudio
+
     @Column(name= "activation_commission",nullable = false)
     private double activationCommission; // comision de activacion
+
+    @Column(name= "activation_commission_type",nullable = false)
+    private double activationCommissionType; // comision de activacion
 
     @Column(name= "gps",nullable = false)
     private double gps;

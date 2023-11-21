@@ -23,7 +23,7 @@ public class SmartPaymentBCPServiceImpl implements SmartPaymentBCPService {
     @Override
     public SmartPaymentBCP createSmartPaymentBCP(Long clientId, SmartPaymentBCP smartPaymentBCP) {
 
-        smartPaymentBCP.setClient(clientService.findById(clientId));
+
         return smartPaymentBCPRepository.save(smartPaymentBCP);
     }
 

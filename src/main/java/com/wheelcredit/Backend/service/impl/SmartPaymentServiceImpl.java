@@ -9,9 +9,11 @@ import com.wheelcredit.Backend.model.SmartPaymentBCP;
 import com.wheelcredit.Backend.repository.SmartPaymentRepository;
 import com.wheelcredit.Backend.service.ClientService;
 import com.wheelcredit.Backend.service.SmartPaymentService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class SmartPaymentServiceImpl implements SmartPaymentService {
 
     SmartPaymentRepository smartPaymentRepository;
@@ -59,77 +61,7 @@ public class SmartPaymentServiceImpl implements SmartPaymentService {
         return smartPaymentRepository.findAll();
     }
 
-    @Override
-    public FinalFeeSchedule signPaymentBCP(SmartPayment smartPayment){
 
-        FinalFeeSchedule finalFeeSchedule = null;
-
-
-        return finalFeeSchedule;
-    }
-
-    private FinalFeeSchedule getAllValues(SmartPayment smartPayment){
-
-        FinalFeeSchedule finalFeeSchedule = null;
-
-        if(smartPayment.getPaymentPlanType() == 24)
-        {
-            smartPayment.setFinalFee(0.5); //% de cuota final
-            smartPayment.setNumberOfYears(2);// numero de años
-        }else{
-            smartPayment.setFinalFee(0.4);
-            smartPayment.setNumberOfYears(3);
-        }
-
-        ////////
-        double TEA;
-        if(smartPayment.getInterestType().equals("TNA")){
-
-            if(smartPayment.getCapitalization().equals("Diaria")){
-                TEA = Math.pow(1+smartPayment.getInterestRate()/(360/1),360/1)-1;
-            } else if (smartPayment.getCapitalization().equals("Mensual")) {
-                TEA = Math.pow(1+smartPayment.getInterestRate()/(360/1),360/1)-1;
-            }else {
-                throw new ValidationException("El tipo de capitalización debe ser Diaria o Mensual");
-            }
-        }else{
-            TEA = smartPayment.getInterestRate();
-        }
-
-        double TEM = Math.pow(1+TEA,smartPayment.getPaymentFrequency()/360)-1;
-        double totalFinalFee = smartPayment.getInitialInstallment()*smartPayment.getFinalFee();
-
-        for(int i = 1;i<=smartPayment.getPaymentPlanType()+1;i++ )//de 1 a 36 en Plan 36
-        {
-            double initialBalance = 0;
-
-            if(i==1)
-            {
-                initialBalance = (totalFinalFee/
-                        Math.pow(1+TEM+smartPayment.getLifeInsurance(),smartPayment.getPaymentPlanType()+1));
-
-                finalFeeSchedule.addInitialBalance(initialBalance);//adList
-                
-            }
-
-            double finalInstallmentInterest = initialBalance*TEM;
-
-            finalFeeSchedule.addFinalInstallmentAmortization(initialBalance);//adList
-
-            double  finalInstallmentInsurance = initialBalance* smartPayment.getLifeInsurance();
-
-            finalFeeSchedule.addFinalInstallmentInsurance(finalInstallmentInsurance);
-
-        }
-
-
-
-
-
-
-
-        return finalFeeSchedule;
-    }
 
     private void existsClientByClientId(Long clientId) {
         Client client = clientService.findById(clientId);

@@ -13,5 +13,5 @@ public interface SmartPaymentService {
     public abstract SmartPayment updateSmartPayment(Long smartPayment_id, SmartPayment smartPayment);
     public abstract void deleteSmartPayment(Long smartPayment_id);
     public abstract List<SmartPayment> getAllSmartPayments();
-    public abstract FinalFeeSchedule signPaymentBCP(SmartPayment smartPayment);
+
 }

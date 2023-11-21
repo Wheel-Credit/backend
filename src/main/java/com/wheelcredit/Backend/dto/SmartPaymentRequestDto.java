@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SmartPaymentDto {
+public class SmartPaymentRequestDto {
     private String name;
     private String description;
     private String image;

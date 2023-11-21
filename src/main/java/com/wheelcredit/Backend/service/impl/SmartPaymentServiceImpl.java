@@ -42,7 +42,7 @@ public class SmartPaymentServiceImpl implements SmartPaymentService {
     public SmartPayment updateSmartPayment(Long smartPayment_id, SmartPayment smartPayment) {
         existsSmartPaymentBySmartPaymentId(smartPayment_id);
         smartPayment.setId(smartPayment_id);
-        // smartPayment.setClient(getSmartPaymentById(smartPayment_id).getClient());
+        smartPayment.setClient(getSmartPaymentById(smartPayment_id).getClient());
         validateSmartPayment(smartPayment);
         return smartPaymentRepository.save(smartPayment);
     }

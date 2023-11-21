@@ -1,6 +1,7 @@
 package com.wheelcredit.Backend.controller;
 
-import com.wheelcredit.Backend.dto.SmartPaymentDto;
+import com.wheelcredit.Backend.dto.SmartPaymentRequestDto;
+import com.wheelcredit.Backend.dto.SmartPaymentResponseDto;
 import com.wheelcredit.Backend.model.SmartPayment;
 
 import com.wheelcredit.Backend.service.SmartPaymentService;
@@ -26,43 +27,45 @@ public class SmartPaymentController {
             ModelMapper modelMapper) {
         this.smartPaymentService = smartPaymentService;
         this.modelMapper = modelMapper;
-        // modelMapper.getConfiguration().setAmbiguityIgnored(true);
-    }
-
-    // URL: http://localhost:8090/api/wheel-credit/v1/smartPayment
-    // Method: GET
-    @Transactional(readOnly = true)
-    @GetMapping
-    public ResponseEntity<List<SmartPayment>> getAllBicycles() {
-        // print somethign
-        List<SmartPayment> bicycles = smartPaymentService.getAllSmartPayments();
-        System.out.println("getAllBicycles");
-        return new ResponseEntity<List<SmartPayment>>(new ArrayList<>(bicycles), HttpStatus.OK);
     }
 
     // URL: http://localhost:8090/api/wheel-credit/v1/smartPayment/{clientId}/list
     // Method: GET
     @Transactional(readOnly = true)
     @GetMapping("/{clientId}/list")
-    public ResponseEntity<List<SmartPaymentDto>> getSmartPaymentByClientId(
+    public ResponseEntity<List<SmartPaymentResponseDto>> getSmartPaymentByClientId(
             @PathVariable(name = "clientId") Long clientId) {
         List<SmartPayment> smartPayments = smartPaymentService.getSmartPaymentByClientId(clientId);
-        List<SmartPaymentDto> smartPaymentDtos = new ArrayList<>();
+        List<SmartPaymentResponseDto> smartPaymentDtos = new ArrayList<>();
         for (SmartPayment smartPayment : smartPayments) {
-            smartPaymentDtos.add(modelMapper.map(smartPayment, SmartPaymentDto.class));
+            smartPaymentDtos.add(modelMapper.map(smartPayment, SmartPaymentResponseDto.class));
         }
-        return new ResponseEntity<List<SmartPaymentDto>>(new ArrayList<>(smartPaymentDtos), HttpStatus.OK);
+        return new ResponseEntity<List<SmartPaymentResponseDto>>(new ArrayList<>(smartPaymentDtos), HttpStatus.OK);
+    }
+
+    // URL:
+    // http://localhost:8090/api/wheel-credit/v1/smartPayment/{smartPaymentId}/update
+    // Method: PUT
+    @Transactional()
+    @PutMapping("/{smartPaymentId}/update")
+    public ResponseEntity<SmartPaymentResponseDto> updateSmartPayment(
+            @PathVariable(name = "smartPaymentId") Long smartPaymentId,
+            @RequestBody SmartPaymentRequestDto smartPayment) {
+        SmartPayment smartPaymentUpdated = smartPaymentService.updateSmartPayment(smartPaymentId,
+                modelMapper.map(smartPayment, SmartPayment.class));
+        SmartPaymentResponseDto smartPaymentDto = modelMapper.map(smartPaymentUpdated, SmartPaymentResponseDto.class);
+        return new ResponseEntity<SmartPaymentResponseDto>(smartPaymentDto, HttpStatus.OK);
     }
 
     // URL: http://localhost:8090/api/wheel-credit/v1/smartPayment/{clientId}/create
     // Method: POST
     @Transactional()
     @PostMapping("/{clientId}/create")
-    public ResponseEntity<SmartPaymentDto> createSmartPayment(@PathVariable(name = "clientId") Long clientId,
-            @RequestBody SmartPayment smartPayment) {
-        SmartPayment smartPaymentCreated = smartPaymentService.createSmartPayment(clientId, smartPayment);
-        SmartPaymentDto smartPaymentDto = modelMapper.map(smartPaymentCreated, SmartPaymentDto.class);
-        return new ResponseEntity<SmartPaymentDto>(smartPaymentDto, HttpStatus.CREATED);
+    public ResponseEntity<SmartPaymentResponseDto> createSmartPayment(@PathVariable(name = "clientId") Long clientId,
+            @RequestBody SmartPaymentRequestDto smartPayment) {
+        SmartPayment smartPaymentCreated = smartPaymentService.createSmartPayment(clientId,
+                modelMapper.map(smartPayment, SmartPayment.class));
+        SmartPaymentResponseDto smartPaymentDto = modelMapper.map(smartPaymentCreated, SmartPaymentResponseDto.class);
+        return new ResponseEntity<SmartPaymentResponseDto>(smartPaymentDto, HttpStatus.CREATED);
     }
-
 }

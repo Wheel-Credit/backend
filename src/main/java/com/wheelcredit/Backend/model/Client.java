@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -40,6 +43,11 @@ public class Client implements UserDetails {
     @OneToMany(mappedBy = "client")
     private List<Token> tokens;
 
+    @JsonIgnore
+    @OneToMany
+    @JoinColumn(name = "client_id")
+    private List<SmartPayment> smartPayments;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
@@ -49,11 +57,12 @@ public class Client implements UserDetails {
     public String getPassword() {
         return password;
     }
+
     @Override
-    public String getUsername()
-    {
+    public String getUsername() {
         return email;
     }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

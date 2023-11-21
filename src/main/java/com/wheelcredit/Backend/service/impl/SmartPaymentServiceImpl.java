@@ -21,8 +21,7 @@ public class SmartPaymentServiceImpl implements SmartPaymentService {
 
     public SmartPaymentServiceImpl(
             SmartPaymentRepository smartPaymentRepository,
-            ClientService clientService
-    ){
+            ClientService clientService) {
         this.clientService = clientService;
         this.smartPaymentRepository = smartPaymentRepository;
     }
@@ -45,7 +44,7 @@ public class SmartPaymentServiceImpl implements SmartPaymentService {
     public SmartPayment updateSmartPayment(Long smartPayment_id, SmartPayment smartPayment) {
         existsSmartPaymentBySmartPaymentId(smartPayment_id);
         smartPayment.setId(smartPayment_id);
-        smartPayment.setClient(getSmartPaymentById(smartPayment_id).getClient());
+        // smartPayment.setClient(getSmartPaymentById(smartPayment_id).getClient());
         validateSmartPayment(smartPayment);
         return smartPaymentRepository.save(smartPayment);
     }
@@ -61,7 +60,11 @@ public class SmartPaymentServiceImpl implements SmartPaymentService {
         return smartPaymentRepository.findAll();
     }
 
-
+    @Override
+    public List<SmartPayment> getSmartPaymentByClientId(Long clientId) {
+        existsClientByClientId(clientId);
+        return smartPaymentRepository.findByClientId(clientId);
+    }
 
     private void existsClientByClientId(Long clientId) {
         Client client = clientService.findById(clientId);
@@ -70,15 +73,14 @@ public class SmartPaymentServiceImpl implements SmartPaymentService {
         }
     }
 
-    private void existsSmartPaymentBySmartPaymentId(Long smartPaymentId)
-    {
-        if(!smartPaymentRepository.existsById(smartPaymentId)){
-            throw new ResourceNotFoundException("No existe el pago inteligente con el id"+ smartPaymentId);
+    private void existsSmartPaymentBySmartPaymentId(Long smartPaymentId) {
+        if (!smartPaymentRepository.existsById(smartPaymentId)) {
+            throw new ResourceNotFoundException("No existe el pago inteligente con el id" + smartPaymentId);
         }
     }
 
-    private void validateSmartPayment(SmartPayment smartPayment){
-        if(smartPayment.getSellingPriceAsset() == 0){
+    private void validateSmartPayment(SmartPayment smartPayment) {
+        if (smartPayment.getSellingPriceAsset() == 0) {
             throw new ValidationException("El precio de venta activo no puede ser nulo");
         }
     }

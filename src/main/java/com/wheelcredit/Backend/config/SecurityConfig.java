@@ -21,9 +21,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors().and()
                 .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers("/api/wheel-credit/v1/auth/**").permitAll()
-                    .requestMatchers("/api/wheel-credit/v1/client","/api/wheel-credit/v1/smartPayment").authenticated()
-                    .anyRequest().authenticated())
+                        .requestMatchers("/api/wheel-credit/v1/auth/**", "/swagger-ui/index.html").permitAll()
+                        .requestMatchers("/api/wheel-credit/v1/client", "/api/wheel-credit/v1/smartPayment")
+                        .authenticated()
+                        .anyRequest().authenticated())
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session
                         // cuando se establece en STATELESS, significa que no se creará ni
@@ -33,6 +34,5 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
 
 }

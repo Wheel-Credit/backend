@@ -8,4 +8,6 @@ public class ClientDto {
     private String lastname;
     private String email;
     private String password;
+    private String description;
+    private String image;
 }

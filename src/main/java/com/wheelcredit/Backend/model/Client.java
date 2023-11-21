@@ -37,6 +37,12 @@ public class Client implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "description", nullable = true)
+    private String description;
+
+    @Column(name = "image", nullable = true)
+    private String image;
+
     @Enumerated(EnumType.STRING)
     private Roles role;
 

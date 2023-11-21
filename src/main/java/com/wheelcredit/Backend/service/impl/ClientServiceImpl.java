@@ -20,12 +20,15 @@ public class ClientServiceImpl implements ClientService {
     public Long save(Client client) {
         validateClientoInfo(client);
         Client savedClient = clientRepository.save(client);
+        savedClient.setImage("https://robohash.org/profile");
+        savedClient.setDescription("This is my description");
         return savedClient.getId();
     }
 
     @Override
     public Client update(Long id, ClientDto clientDto) {
-        Client client = clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + id));
+        Client client = clientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + id));
         updateClientFromDto(client, clientDto);
         return clientRepository.save(client);
     }
